@@ -14,10 +14,16 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const fbProvider = new firebase.auth.FacebookAuthProvider();
+const ghProvider = new firebase.auth.GithubAuthProvider();
 
 export const fbAuth = async () => {
   await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   return firebase.auth().signInWithPopup(fbProvider)
+}
+
+export const ghAuth = async () => {
+  await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  return firebase.auth().signInWithPopup(ghProvider)
 }
 
 
