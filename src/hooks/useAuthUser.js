@@ -17,7 +17,9 @@ export default () => {
     }
     const unsubscribe = auth().onAuthStateChanged(setUser);
 
-    return () => unsubscribe;
+    return () => {
+      unsubscribe();
+    }
   }, [dispatch]);
 
   return currentUser
