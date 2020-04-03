@@ -98,9 +98,9 @@ function App() {
             <PrivateRoute path="/account">
               <Account />
             </PrivateRoute>
-            <PrivateRoute path="/quiz/new">
+            <Route path="/quiz/new">
               <NewQuiz />
-            </PrivateRoute>
+            </Route>
             <Route path="/">
               <Quiz />
             </Route>
