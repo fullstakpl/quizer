@@ -1,14 +1,16 @@
 import React from 'react';
 import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 
 const Question = styled.div`
   max-width: 400px;
   border: 1px solid #999;
   padding: 12px;
   margin-top: 12px;
+  margin-bottom: 6px;
 `;
 
 const Answer = styled.div`
@@ -20,9 +22,12 @@ const Points = styled(Input)`
   width: 50px;
 `
 
+const Controls = styled.div`
+  margin: 12px;
+`
+
 export default () => {
 
-  const { register, handleSubmit, errors } = useForm();
   const initialQuestion = {
     content: '',
     answers: [
@@ -44,10 +49,13 @@ export default () => {
     setQuestions(newArr);
   }
 
-
   const onSubmit = values => {
     console.log(values);
   };
+
+  const { handleSubmit, register, errors } = useForm();
+
+  console.log(errors)
 
   return(
     <div>
@@ -55,10 +63,11 @@ export default () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           name="title"
-          inputRef={register()}
+          inputRef={register({ required: true })}
           placeholder="Nazwa"
           inputProps={{ 'aria-label': 'nazwa' }}
         />
+        {errors.title && <p style={{color: 'red'}}>Pole wymagane</p>}
         {questions.map((question, q) =>
           <Question key={`question${q}`}>
             <Input
@@ -71,14 +80,14 @@ export default () => {
             {question.answers.map((answer, a) =>
               <Answer key={`answer${a}`}>
                 <Input
-                  name={`question[${q}].answers[${a}].content`}
                   inputRef={register()}
+                  name={`question[${q}].answers[${a}].content`}
                   placeholder={`Odp ${a+1}`}
                   inputProps={{ 'aria-label': `odp ${a+1}` }}
                 />
                 <Points
-                  name={`question[${q}].answers[${a}].points`}
                   inputRef={register()}
+                  name={`question[${q}].answers[${a}].points`}
                   defaultValue={0}
                   type='number'
                   inputProps={{ 'aria-label': `points ${a+1}` }}
@@ -87,10 +96,15 @@ export default () => {
             )}
           </Question>
         )}
-        <button onClick={addQuestion}>Dodaj pytanie</button>
-        <button onClick={removeQuestion}>Usuń pytanie</button>
-        <button type="submit">Utwórz quiz</button>
+        <Button variant="contained" color="primary" type="submit">
+          Utwórz quiz
+        </Button>
       </form>
+      <Controls>
+        <Button onClick={addQuestion}>Dodaj pytanie</Button>
+        <Button onClick={removeQuestion}>Usuń pytanie</Button>
+      </Controls>
+
     </div>
   )
 }
