@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 
 import { useForm } from "react-hook-form";
+import { db, auth } from "../../services/firebase";
 
 const Question = styled.div`
   max-width: 400px;
@@ -49,13 +50,17 @@ export default () => {
     setQuestions(newArr);
   }
 
-  const onSubmit = values => {
+  const onSubmit = async values => {
     console.log(values);
+    const authorId = auth().currentUser.uid
+    const quiz = await db.collection("quizes").add({
+      ...values,
+      authorId
+    })
+    console.log(quiz.id);
   };
 
   const { handleSubmit, register, errors } = useForm();
-
-  console.log(errors)
 
   return(
     <div>
@@ -73,7 +78,7 @@ export default () => {
             <Input
               fullWidth
               inputRef={register()}
-              name={`question[${q}].content`}
+              name={`questions[${q}].content`}
               placeholder={`Pytanie ${q+1}`}
               inputProps={{ 'aria-label': `pytanie ${q+1}` }}
             />
@@ -81,13 +86,13 @@ export default () => {
               <Answer key={`answer${a}`}>
                 <Input
                   inputRef={register()}
-                  name={`question[${q}].answers[${a}].content`}
+                  name={`questions[${q}].answers[${a}].content`}
                   placeholder={`Odp ${a+1}`}
                   inputProps={{ 'aria-label': `odp ${a+1}` }}
                 />
                 <Points
                   inputRef={register()}
-                  name={`question[${q}].answers[${a}].points`}
+                  name={`questions[${q}].answers[${a}].points`}
                   defaultValue={0}
                   type='number'
                   inputProps={{ 'aria-label': `points ${a+1}` }}

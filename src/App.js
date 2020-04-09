@@ -13,6 +13,7 @@ import { Quiz } from './features/quiz/Quiz';
 import Login from './features/auth/Login';
 import Account from './features/auth/Account';
 import NewQuiz from './features/quiz/NewQuiz.js';
+import QuizList from './features/quiz/QuizList.js';
 import useAuthUser from './hooks/useAuthUser';
 import { Navbar, SideMenu } from './components/Menu';
 
@@ -100,6 +101,9 @@ function App() {
             </PrivateRoute>
             <Route path="/quiz/new">
               <NewQuiz />
+            </Route>
+            <Route path="/quiz/all">
+              <QuizList />
             </Route>
             <Route path="/">
               <Quiz />
